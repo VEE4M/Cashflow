@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/overviewFragment">
+
+    <fragment
+        android:id="@+id/incomeFragment"
+        android:name="com.gmail.appverstas.cashflow.data.income.fragments.IncomeFragment"
+        android:label="Income"
+        tools:layout="@layout/fragment_income">
+        <action
+            android:id="@+id/action_incomeFragment_to_editIncomeFragment"
+            app:destination="@id/editIncomeFragment" />
+        <action
+            android:id="@+id/action_incomeFragment_to_addIncomeFragment"
+            app:destination="@id/addIncomeFragment" />
+        <action
+            android:id="@+id/action_incomeFragment_to_overviewFragment"
+            app:destination="@id/overviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/overviewFragment"
+        android:name="com.gmail.appverstas.cashflow.OverviewFragment"
+        android:label="Cashflow Overview"
+        tools:layout="@layout/fragment_overview">
+        <action
+            android:id="@+id/action_overviewFragment_to_incomeFragment"
+            app:destination="@id/incomeFragment" />
+        <action
+            android:id="@+id/action_overviewFragment_to_expensesFragment"
+            app:destination="@id/expensesFragment" />
+        <action
+            android:id="@+id/action_overviewFragment_to_savingAndInvestingFragment"
+            app:destination="@id/savingAndInvestingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addIncomeFragment"
+        android:name="com.gmail.appverstas.cashflow.data.income.fragments.AddIncomeFragment"
+        android:label="Add Income"
+        tools:layout="@layout/fragment_income_add">
+        <action
+            android:id="@+id/action_addIncomeFragment_to_incomeFragment"
+            app:destination="@id/incomeFragment"
+            app:popUpTo="@id/incomeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/editIncomeFragment"
+        android:name="com.gmail.appverstas.cashflow.data.income.fragments.EditIncomeFragment"
+        android:label="Edit Income"
+        tools:layout="@layout/fragment_income_edit">
+        <action
+            android:id="@+id/action_editIncomeFragment_to_incomeFragment"
+            app:destination="@id/incomeFragment"
+            app:popUpTo="@id/incomeFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="currentItem"
+            app:argType="com.gmail.appverstas.cashflow.data.income.models.IncomeItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/expensesFragment"
+        android:name="com.gmail.appverstas.cashflow.data.expenses.fragments.ExpensesFragment"
+        android:label="Expenses"
+        tools:layout="@layout/fragment_expenses">
+        <action
+            android:id="@+id/action_expensesFragment_to_addExpenseFragment"
+            app:destination="@id/addExpenseFragment" />
+        <action
+            android:id="@+id/action_expensesFragment_to_editExpenseFragment"
+            app:destination="@id/editExpenseFragment" />
+        <action
+            android:id="@+id/action_expensesFragment_to_overviewFragment"
+            app:destination="@id/overviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addExpenseFragment"
+        android:name="com.gmail.appverstas.cashflow.data.expenses.fragments.AddExpenseFragment"
+        android:label="Add Expense"
+        tools:layout="@layout/fragment_expense_add">
+        <action
+            android:id="@+id/action_addExpenseFragment_to_expensesFragment"
+            app:destination="@id/expensesFragment"
+            app:popUpTo="@id/expensesFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/editExpenseFragment"
+        android:name="com.gmail.appverstas.cashflow.data.expenses.fragments.EditExpenseFragment"
+        android:label="Edit Expense"
+        tools:layout="@layout/fragment_expense_edit">
+        <action
+            android:id="@+id/action_editExpenseFragment_to_expensesFragment"
+            app:destination="@id/expensesFragment"
+            app:popUpTo="@id/expensesFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="currentExpenseItem"
+            app:argType="com.gmail.appverstas.cashflow.data.expenses.models.ExpenseItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/savingAndInvestingFragment"
+        android:name="com.gmail.appverstas.cashflow.data.saving.fragments.SavingAndInvestingFragment"
+        android:label="Saving and Investing"
+        tools:layout="@layout/fragment_saving_and_investing">
+        <action
+            android:id="@+id/action_savingAndInvestingFragment_to_addItemFragment"
+            app:destination="@id/addItemFragment" />
+        <action
+            android:id="@+id/action_savingAndInvestingFragment_to_editItemFragment"
+            app:destination="@id/editItemFragment" />
+        <action
+            android:id="@+id/action_savingAndInvestingFragment_to_overviewFragment"
+            app:destination="@id/overviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addItemFragment"
+        android:name="com.gmail.appverstas.cashflow.data.saving.fragments.AddItemFragment"
+        android:label="Add"
+        tools:layout="@layout/fragment_saving_and_investing_add">
+        <action
+            android:id="@+id/action_addItemFragment_to_savingAndInvestingFragment"
+            app:destination="@id/savingAndInvestingFragment"
+            app:popUpTo="@id/savingAndInvestingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/editItemFragment"
+        android:name="com.gmail.appverstas.cashflow.data.saving.fragments.EditItemFragment"
+        android:label="Edit"
+        tools:layout="@layout/fragment_saving_and_investing_edit">
+        <action
+            android:id="@+id/action_editItemFragment_to_savingAndInvestingFragment"
+            app:destination="@id/savingAndInvestingFragment"
+            app:popUpTo="@id/savingAndInvestingFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="currentSavingItem"
+            app:argType="com.gmail.appverstas.cashflow.data.saving.models.SavingItem" />
+    </fragment>
+</navigation>
