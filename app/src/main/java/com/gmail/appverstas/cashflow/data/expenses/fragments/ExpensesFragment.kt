@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.charts.PieChart
@@ -22,21 +21,14 @@ import com.gmail.appverstas.cashflow.data.expenses.ExpenseViewModel
 import com.gmail.appverstas.cashflow.data.expenses.models.ExpenseItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_expenses.view.*
-import kotlinx.android.synthetic.main.fragment_overview.*
 
 
 class ExpensesFragment : Fragment() {
 
-    val expenseViewModel: ExpenseViewModel by viewModels()
-    val adapter: ExpenseListAdapter by lazy { ExpenseListAdapter() }
-    lateinit var totalExpensesText: TextView
-    lateinit var pieChartExpenses: PieChart
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private val expenseViewModel: ExpenseViewModel by viewModels()
+    private val adapter: ExpenseListAdapter by lazy { ExpenseListAdapter() }
+    private lateinit var totalExpensesText: TextView
+    private lateinit var pieChartExpenses: PieChart
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,7 +45,7 @@ class ExpensesFragment : Fragment() {
         pieChartExpenses.setNoDataText("")
 
 
-        expenseViewModel.getAllData.observe(viewLifecycleOwner, Observer { updatedExpenseList ->
+        expenseViewModel.getAllData.observe(viewLifecycleOwner, { updatedExpenseList ->
             adapter.updateData(updatedExpenseList)
             updateTotalExpensesText(updatedExpenseList)
             displayPieChart(updatedExpenseList)
@@ -69,25 +61,25 @@ class ExpensesFragment : Fragment() {
     private fun updateTotalExpensesText(updatedExpenseList: List<ExpenseItem>) {
         var counter = 0.0
         for(expenseItem in updatedExpenseList){
-            counter = counter + expenseItem.amount
+            counter += expenseItem.amount
         }
-        totalExpensesText.setText("Total: $counter€")
+        totalExpensesText.text = getString(R.string.total_amount, counter)
 
     }
 
     private fun displayPieChart(updatedExpenseList: List<ExpenseItem>){
         pieChartExpenses.setTransparentCircleColor(Color.BLACK)
 
-        var pieEntryList = ArrayList<PieEntry>()
+        val pieEntryList = ArrayList<PieEntry>()
 
         for (entry in updatedExpenseList){
             pieEntryList.add(PieEntry(entry.amount.toFloat(), entry.title))
         }
 
-        var pieDataSet = PieDataSet(pieEntryList, "")
+        val pieDataSet = PieDataSet(pieEntryList, "")
         pieDataSet.sliceSpace = 2f
         pieDataSet.colors = ColorTemplate.JOYFUL_COLORS.toList()
-        var pieData = PieData(pieDataSet)
+        val pieData = PieData(pieDataSet)
         pieChartExpenses.data = pieData
         pieChartExpenses.description = null
         pieChartExpenses.legend.textColor = Color.WHITE
@@ -97,8 +89,8 @@ class ExpensesFragment : Fragment() {
         pieChartExpenses.setHoleColor(Color.BLACK)
         pieChartExpenses.setEntryLabelColor(Color.BLACK)
         pieChartExpenses.animate()
-        pieChartExpenses.invalidate();
-        pieChartExpenses.refreshDrawableState();
+        pieChartExpenses.invalidate()
+        pieChartExpenses.refreshDrawableState()
     }
 
 }

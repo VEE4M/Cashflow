@@ -13,9 +13,9 @@ import kotlinx.android.synthetic.main.list_row_expense.view.*
 /**
  *Veli-Matti Tikkanen, 25.1.2021
  */
-class ExpenseListAdapter(): RecyclerView.Adapter<ExpenseListAdapter.ViewHolder>() {
+class ExpenseListAdapter : RecyclerView.Adapter<ExpenseListAdapter.ViewHolder>() {
 
-    var expenseList = emptyList<ExpenseItem>()
+    private var expenseList = emptyList<ExpenseItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_row_expense, parent, false)
@@ -23,9 +23,9 @@ class ExpenseListAdapter(): RecyclerView.Adapter<ExpenseListAdapter.ViewHolder>(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemView.text_expense_title.setText(expenseList[position].title)
-        holder.itemView.text_expense_amount.setText(expenseList[position].amount.toString() + "€")
-        holder.itemView.text_expense_type.setText(expenseList[position].getExpenseTypeAsString())
+        holder.itemView.text_expense_title.text = expenseList[position].title
+        holder.itemView.text_expense_amount.text = expenseList[position].amount.toString() + "€"
+        holder.itemView.text_expense_type.text = expenseList[position].getExpenseTypeAsString()
 
         holder.itemView.list_row_expense.setOnClickListener {
             val action = ExpensesFragmentDirections.actionExpensesFragmentToEditExpenseFragment(expenseList[position])

@@ -16,13 +16,8 @@ import kotlinx.android.synthetic.main.fragment_expense_edit.view.*
 
 class EditExpenseFragment : Fragment() {
 
-    val args by navArgs<EditExpenseFragmentArgs>()
-    val expenseViewModel: ExpenseViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private val args by navArgs<EditExpenseFragmentArgs>()
+    private val expenseViewModel: ExpenseViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,12 +51,12 @@ class EditExpenseFragment : Fragment() {
     }
 
     private fun saveToDb() {
-        var newTitle = et_edit_expense_title.text.toString()
-        var newType = spinner_edit_expense_type.selectedItem.toString()
-        var newAmount = et_edit_expense_amount.text.toString().toDouble()
-        var validation = SharedMethods.verifyDataFormat(newTitle, newAmount)
+        val newTitle = et_edit_expense_title.text.toString()
+        val newType = spinner_edit_expense_type.selectedItem.toString()
+        val newAmount = et_edit_expense_amount.text.toString().toDouble()
+        val validation = SharedMethods.verifyDataFormat(newTitle, newAmount)
         if(validation){
-            var updatedExpense = ExpenseItem(
+            val updatedExpense = ExpenseItem(
                     args.currentExpenseItem.id,
                     newTitle,
                     ExpenseItem.parseExpenseType(newType),

@@ -10,17 +10,11 @@ import com.gmail.appverstas.cashflow.R
 import com.gmail.appverstas.cashflow.data.SharedMethods
 import com.gmail.appverstas.cashflow.data.expenses.ExpenseViewModel
 import com.gmail.appverstas.cashflow.data.expenses.models.ExpenseItem
-import com.gmail.appverstas.cashflow.data.expenses.models.ExpenseType
 import kotlinx.android.synthetic.main.fragment_expense_add.*
 
 class AddExpenseFragment : Fragment() {
 
-    val expenseViewModel: ExpenseViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private val expenseViewModel: ExpenseViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,12 +38,12 @@ class AddExpenseFragment : Fragment() {
     }
 
     private fun saveToDatabase(){
-        var title = et_expense_title.text.toString()
-        var type = spinner_expense_type.selectedItem.toString()
-        var amount = et_expense_amount.text.toString().toDouble()
-        var validation = SharedMethods.verifyDataFormat(title, amount)
+        val title = et_expense_title.text.toString()
+        val type = spinner_expense_type.selectedItem.toString()
+        val amount = et_expense_amount.text.toString().toDouble()
+        val validation = SharedMethods.verifyDataFormat(title, amount)
         if(validation){
-            var newExpense = ExpenseItem(
+            val newExpense = ExpenseItem(
                     0,
                     title,
                     ExpenseItem.parseExpenseType(type),
