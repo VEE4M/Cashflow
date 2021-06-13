@@ -46,7 +46,7 @@ class EditExpenseFragment : Fragment() {
 
     private fun deleteExpense() {
         expenseViewModel.deleteExpense(args.currentExpenseItem)
-        Toast.makeText(requireContext(), "Deleted!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), getString(R.string.toast_deleted), Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_editExpenseFragment_to_expensesFragment)
     }
 
@@ -63,10 +63,10 @@ class EditExpenseFragment : Fragment() {
                     newAmount
             )
             expenseViewModel.updateExpense(updatedExpense)
-            Toast.makeText(requireContext(), "Expense updated!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.toast_updated), Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_editExpenseFragment_to_expensesFragment)
         }else{
-            Toast.makeText(requireContext(), "Please fill all the fields!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.toast_please_fill_all_fields), Toast.LENGTH_SHORT).show()
         }
     }
 

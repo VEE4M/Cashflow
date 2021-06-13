@@ -50,10 +50,10 @@ class AddExpenseFragment : Fragment() {
                     amount
             )
             expenseViewModel.insertExpense(newExpense)
-            Toast.makeText(requireContext(), "Expense saved!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.toast_saved), Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_addExpenseFragment_to_expensesFragment)
         }else{
-            Toast.makeText(requireContext(), "Please fill all the fields!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.toast_please_fill_all_fields), Toast.LENGTH_SHORT).show()
         }
     }
 

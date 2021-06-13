@@ -26,12 +26,10 @@ class ExpenseListAdapter : RecyclerView.Adapter<ExpenseListAdapter.ViewHolder>()
         holder.itemView.text_expense_title.text = expenseList[position].title
         holder.itemView.text_expense_amount.text = expenseList[position].amount.toString() + "€"
         holder.itemView.text_expense_type.text = expenseList[position].getExpenseTypeAsString()
-
         holder.itemView.list_row_expense.setOnClickListener {
             val action = ExpensesFragmentDirections.actionExpensesFragmentToEditExpenseFragment(expenseList[position])
             holder.itemView.findNavController().navigate(action)
         }
-
     }
 
     override fun getItemCount(): Int {

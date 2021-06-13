@@ -14,18 +14,12 @@ import kotlinx.android.synthetic.main.fragment_saving_and_investing_add.*
 
 class AddItemFragment : Fragment() {
 
-
-    val savingViewModel: SavingViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val savingViewModel: SavingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_saving_and_investing_add, container, false)
         setHasOptionsMenu(true)
         return view
@@ -44,21 +38,21 @@ class AddItemFragment : Fragment() {
     }
 
     private fun saveToDb() {
-        var title = et_saving_investing_title.text.toString()
-        var amount = et_saving_investing_amount.text.toString().toDouble()
-        var validation = SharedMethods.verifyDataFormat(title, amount)
+        val title = et_saving_investing_title.text.toString()
+        val amount = et_saving_investing_amount.text.toString().toDouble()
+        val validation = SharedMethods.verifyDataFormat(title, amount)
         if(validation){
-            var newItem = SavingItem(
+            val newItem = SavingItem(
                     0,
                     title,
                     amount,
                     SavingItem.getSavingType(radio_btn_saving.isChecked)
             )
             savingViewModel.insertSaving(newItem)
-            Toast.makeText(requireContext(), "Saved!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.toast_saved), Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_addItemFragment_to_savingAndInvestingFragment)
         }else{
-            Toast.makeText(requireContext(), "Please fill all the fields!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.toast_please_fill_all_fields), Toast.LENGTH_SHORT).show()
         }
     }
 

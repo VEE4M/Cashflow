@@ -1,16 +1,13 @@
 package com.gmail.appverstas.cashflow
 
-import android.content.ContentValues.TAG
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -22,7 +19,6 @@ import com.gmail.appverstas.cashflow.data.income.IncomeViewModel
 import com.gmail.appverstas.cashflow.data.income.models.IncomeItem
 import com.gmail.appverstas.cashflow.data.saving.SavingViewModel
 import com.gmail.appverstas.cashflow.data.saving.models.SavingItem
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_overview.*
 
 
@@ -31,14 +27,13 @@ class OverviewFragment : Fragment() {
     private val incomeViewModel: IncomeViewModel by viewModels()
     private val expenseViewModel: ExpenseViewModel by viewModels()
     private val savingViewModel: SavingViewModel by viewModels()
-
     private var currentTotalIncome = 0.0
     private var currentTotalExpense = 0.0
     private var currentTotalSavings = 0.0
     private var unAllocatedAmounts = 0.0
-
+    private var pieEntryList = ArrayList<PieEntry>()
+    private var colorList = mutableListOf<Int>()
     private lateinit var pieChart: PieChart
-
     var currentTotalInvestments = 0.0
 
     override fun onCreateView(
@@ -73,6 +68,7 @@ class OverviewFragment : Fragment() {
             currentTotalIncome = getCurrentTotalIncome(updatedIncomeList)
             unAllocatedAmounts = getUnAllocatedAmount()
             updateTextViews()
+            setupPieChartColorsAndLabels()
             displayPieChart()
         })
 
@@ -80,6 +76,7 @@ class OverviewFragment : Fragment() {
             currentTotalExpense = getCurrentTotalExpense(updatedExpenseList)
             unAllocatedAmounts = getUnAllocatedAmount()
             updateTextViews()
+            setupPieChartColorsAndLabels()
             displayPieChart()
         })
 
@@ -88,6 +85,7 @@ class OverviewFragment : Fragment() {
             currentTotalInvestments = getCurrentTotalInvestments(updatedSavingsList)
             unAllocatedAmounts = getUnAllocatedAmount()
             updateTextViews()
+            setupPieChartColorsAndLabels()
             displayPieChart()
         })
 
@@ -111,7 +109,7 @@ class OverviewFragment : Fragment() {
     }
 
     private fun getCurrentTotalSavings(updatedSavingsList: List<SavingItem> ): Double{
-        val savingList = updatedSavingsList.filter { savingItem -> savingItem.type.equals("Saving") }
+        val savingList = updatedSavingsList.filter { savingItem -> savingItem.type == "Saving" }
         var counter = 0.0
         for(item in savingList){
             counter += item.amount
@@ -120,7 +118,7 @@ class OverviewFragment : Fragment() {
     }
 
     private fun getCurrentTotalInvestments(updatedSavingsList: List<SavingItem>): Double{
-        val investmentsList = updatedSavingsList.filter { savingItem -> savingItem.type.equals("Investment") }
+        val investmentsList = updatedSavingsList.filter { savingItem -> savingItem.type == "Investment" }
         var counter = 0.0
         for(item in investmentsList){
             counter += item.amount
@@ -147,40 +145,29 @@ class OverviewFragment : Fragment() {
 
     }
 
-    private fun addColor(string: String): Int{
-        return when (string){
-            "currentTotalSavings" -> resources.getColor(R.color.blue_saving)
-            "currentTotalExpense" -> resources.getColor(R.color.pink_expense)
-            "currentTotalInvestments" -> resources.getColor(R.color.yellow_investment)
-            "unAllocatedAmounts" -> resources.getColor(R.color.green_unallocated)
-            else -> Color.CYAN
+    private fun setupPieChartColorsAndLabels(){
+        pieEntryList.clear()
+        colorList.clear()
+        if (currentTotalSavings > 0) {
+            pieEntryList.add(PieEntry(currentTotalSavings.toFloat(), getString(R.string.chart_label_savings)))
+            colorList.add(resources.getColor(R.color.blue_saving))
+        }
+        if (currentTotalExpense > 0 ) {
+            pieEntryList.add(PieEntry(currentTotalExpense.toFloat(), getString(R.string.chart_label_expenses)))
+            colorList.add(resources.getColor(R.color.pink_expense))
+        }
+        if (currentTotalInvestments > 0) {
+            pieEntryList.add(PieEntry(currentTotalInvestments.toFloat(), getString(R.string.chart_label_investments)))
+            colorList.add(resources.getColor(R.color.yellow_investment))
+        }
+        if (unAllocatedAmounts > 0) {
+            pieEntryList.add(PieEntry(unAllocatedAmounts.toFloat(), getString(R.string.chart_label_unallocated)))
+            colorList.add(resources.getColor(R.color.green_unallocated))
         }
     }
 
     private fun displayPieChart(){
-        Log.d(TAG, "displayPieChart: called: $currentTotalIncome , $currentTotalExpense , $currentTotalSavings , $currentTotalInvestments" )
         pieChart.setTransparentCircleColor(Color.BLACK)
-
-        val pieEntryList = ArrayList<PieEntry>()
-        val colorList = mutableListOf<Int>()
-        if (currentTotalSavings > 0) {
-            pieEntryList.add(PieEntry(currentTotalSavings.toFloat(), "Saving"))
-            colorList.add(resources.getColor(R.color.blue_saving))
-        }
-        if (currentTotalExpense > 0 ) {
-            pieEntryList.add(PieEntry(currentTotalExpense.toFloat(), "Expenses"))
-            colorList.add(resources.getColor(R.color.pink_expense))
-        }
-        if (currentTotalInvestments > 0) {
-            pieEntryList.add(PieEntry(currentTotalInvestments.toFloat(), "Investments"))
-            colorList.add(resources.getColor(R.color.yellow_investment))
-        }
-        if (unAllocatedAmounts > 0) {
-            pieEntryList.add(PieEntry(unAllocatedAmounts.toFloat(), "Unallocated"))
-            colorList.add(resources.getColor(R.color.green_unallocated))
-        }
-
-
         val pieDataSet = PieDataSet(pieEntryList, "")
         pieDataSet.sliceSpace = 2f
         pieDataSet.colors = colorList
@@ -194,8 +181,8 @@ class OverviewFragment : Fragment() {
         pieChart.setHoleColor(Color.BLACK)
         pieChart.setEntryLabelColor(Color.BLACK)
         pieChart.animate()
-        pieChart.invalidate();
-        pieChart.refreshDrawableState();
+        pieChart.invalidate()
+        pieChart.refreshDrawableState()
     }
 
 }

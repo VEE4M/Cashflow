@@ -7,6 +7,14 @@
     <string name="unallocated_amount">Unallocated amount: %.1f€</string>
     <string name="total_amount">Total: %.1f€</string>
     <string name="amount">%.1f€</string>
+    <string name="toast_please_fill_all_fields">Please fill all fields</string>
+    <string name="toast_deleted">Deleted!</string>
+    <string name="toast_updated">Updated!</string>
+    <string name="toast_saved">Saved!</string>
+    <string name="chart_label_savings">Savings</string>
+    <string name="chart_label_expenses">Expenses</string>
+    <string name="chart_label_investments">Investments</string>
+    <string name="chart_label_unallocated">Unallocated</string>
 
     <string-array name="spinner_income_type">
         <item>"Capital gains"</item>

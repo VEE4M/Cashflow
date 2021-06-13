@@ -35,7 +35,6 @@ class ExpensesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_expenses, container, false)
-
         val addExpenseFab = view.findViewById<FloatingActionButton>(R.id.fab_add_expense)
         val recyclerView = view.recycler_view_expenses
         recyclerView.adapter = adapter
@@ -43,7 +42,6 @@ class ExpensesFragment : Fragment() {
         totalExpensesText = view.findViewById(R.id.text_total_expense)
         pieChartExpenses = view.findViewById(R.id.pieChart_expenses)
         pieChartExpenses.setNoDataText("")
-
 
         expenseViewModel.getAllData.observe(viewLifecycleOwner, { updatedExpenseList ->
             adapter.updateData(updatedExpenseList)
@@ -54,7 +52,6 @@ class ExpensesFragment : Fragment() {
         addExpenseFab.setOnClickListener {
             findNavController().navigate(R.id.action_expensesFragment_to_addExpenseFragment)
         }
-
         return view
     }
 

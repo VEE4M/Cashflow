@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.gmail.appverstas.cashflow.R
 import com.gmail.appverstas.cashflow.data.SharedMethods
-import com.gmail.appverstas.cashflow.data.income.models.IncomeType
 import com.gmail.appverstas.cashflow.data.income.IncomeViewModel
 import com.gmail.appverstas.cashflow.data.income.models.IncomeItem
 import kotlinx.android.synthetic.main.fragment_income_add.*
@@ -16,21 +15,13 @@ import kotlinx.android.synthetic.main.fragment_income_add.*
 
 class AddIncomeFragment : Fragment() {
 
-
     private val incomeViewModel: IncomeViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_income_add, container, false)
-
         setHasOptionsMenu(true)
         return view
     }
@@ -42,14 +33,14 @@ class AddIncomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         if(item.itemId == R.id.app_bar_save){
-            addItemtoDb()
+            addItemToDb()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun addItemtoDb(){
-        var incomeTitle = et_income_title.text.toString()
-        var incomeAmount = et_income_net_amount.text.toString().toDouble()
+    private fun addItemToDb(){
+        val incomeTitle = et_income_title.text.toString()
+        val incomeAmount = et_income_net_amount.text.toString().toDouble()
         val validation = SharedMethods.verifyDataFormat(incomeTitle, incomeAmount)
         if(validation){
             val newIncome = IncomeItem(
@@ -58,10 +49,10 @@ class AddIncomeFragment : Fragment() {
                     IncomeItem.parseIncomeType(spinner_income_type.selectedItem.toString()),
                     incomeAmount)
             incomeViewModel.insertIncome(newIncome)
-            Toast.makeText(requireContext(), "New income added!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.toast_saved), Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_addIncomeFragment_to_incomeFragment)
         }else{
-            Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.toast_please_fill_all_fields), Toast.LENGTH_SHORT).show()
         }
     }
 

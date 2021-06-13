@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,24 +25,21 @@ import kotlinx.android.synthetic.main.fragment_saving_and_investing.*
 
 class SavingAndInvestingFragment : Fragment() {
 
-    val savingViewModel: SavingViewModel by viewModels()
-
-    val adapter: SavingListAdapter by lazy { SavingListAdapter() }
-
-    lateinit private var pieChartSavingsAndInvestments: PieChart
+    private val savingViewModel: SavingViewModel by viewModels()
+    private val adapter: SavingListAdapter by lazy { SavingListAdapter() }
+    private lateinit var pieChartSavingsAndInvestments: PieChart
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_saving_and_investing, container, false)
         val fab = view.findViewById<FloatingActionButton>(R.id.fab_add_saving_item)
         val recyclerView = view.findViewById<RecyclerView>(R.id.savingsRecyclerView)
         pieChartSavingsAndInvestments = view.findViewById(R.id.pieChart_savings)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        savingViewModel.getAllData.observe(viewLifecycleOwner, Observer { updatedSavingsList ->
+        savingViewModel.getAllData.observe(viewLifecycleOwner, { updatedSavingsList ->
             adapter.updateData((updatedSavingsList.sortedBy {savingItem -> savingItem.type }).reversed())
             updateTotalText(updatedSavingsList)
             displayPieChart(updatedSavingsList)
@@ -59,25 +55,22 @@ class SavingAndInvestingFragment : Fragment() {
     private fun updateTotalText(updatedSavingsList: List<SavingItem>){
         var counter = 0.0
         for(entry in updatedSavingsList){
-            counter = counter + entry.amount
+            counter += entry.amount
         }
-        text_total_savings_and_investments.setText("Total: $counter€")
+        text_total_savings_and_investments.text = getString(R.string.total_amount, counter)
     }
 
 
     private fun displayPieChart(updatedSavingsList: List<SavingItem>){
         pieChartSavingsAndInvestments.setTransparentCircleColor(Color.BLACK)
-
-        var pieEntryList = ArrayList<PieEntry>()
-
+        val pieEntryList = ArrayList<PieEntry>()
         for (entry in updatedSavingsList){
             pieEntryList.add(PieEntry(entry.amount.toFloat(), entry.title))
         }
-
-        var pieDataSet = PieDataSet(pieEntryList, "")
+        val pieDataSet = PieDataSet(pieEntryList, "")
         pieDataSet.sliceSpace = 2f
         pieDataSet.colors = ColorTemplate.JOYFUL_COLORS.toList()
-        var pieData = PieData(pieDataSet)
+        val pieData = PieData(pieDataSet)
         pieChartSavingsAndInvestments.data = pieData
         pieChartSavingsAndInvestments.description = null
         pieChartSavingsAndInvestments.legend.textColor = Color.WHITE
@@ -87,8 +80,8 @@ class SavingAndInvestingFragment : Fragment() {
         pieChartSavingsAndInvestments.setHoleColor(Color.BLACK)
         pieChartSavingsAndInvestments.setEntryLabelColor(Color.BLACK)
         pieChartSavingsAndInvestments.animate()
-        pieChartSavingsAndInvestments.invalidate();
-        pieChartSavingsAndInvestments.refreshDrawableState();
+        pieChartSavingsAndInvestments.invalidate()
+        pieChartSavingsAndInvestments.refreshDrawableState()
     }
 
 }
