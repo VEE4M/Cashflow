@@ -3,17 +3,16 @@ package com.gmail.appverstas.cashflow.data.income.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.gmail.appverstas.cashflow.R
-import com.gmail.appverstas.cashflow.data.SharedMethods
+import com.gmail.appverstas.cashflow.data.BaseFragment
 import com.gmail.appverstas.cashflow.data.income.IncomeViewModel
 import com.gmail.appverstas.cashflow.data.income.models.IncomeItem
 import kotlinx.android.synthetic.main.fragment_income_add.*
 
 
-class AddIncomeFragment : Fragment() {
+class AddIncomeFragment : BaseFragment(R.layout.fragment_income_add) {
 
     private val incomeViewModel: IncomeViewModel by viewModels()
 
@@ -41,7 +40,7 @@ class AddIncomeFragment : Fragment() {
     private fun addItemToDb(){
         val incomeTitle = et_income_title.text.toString()
         val incomeAmount = et_income_net_amount.text.toString().toDouble()
-        val validation = SharedMethods.verifyDataFormat(incomeTitle, incomeAmount)
+        val validation = verifyDataFormat(incomeTitle, incomeAmount)
         if(validation){
             val newIncome = IncomeItem(
                     0,

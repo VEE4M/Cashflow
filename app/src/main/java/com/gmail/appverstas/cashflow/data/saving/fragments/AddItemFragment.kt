@@ -3,16 +3,15 @@ package com.gmail.appverstas.cashflow.data.saving.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.gmail.appverstas.cashflow.R
-import com.gmail.appverstas.cashflow.data.SharedMethods
+import com.gmail.appverstas.cashflow.data.BaseFragment
 import com.gmail.appverstas.cashflow.data.saving.SavingViewModel
 import com.gmail.appverstas.cashflow.data.saving.models.SavingItem
 import kotlinx.android.synthetic.main.fragment_saving_and_investing_add.*
 
-class AddItemFragment : Fragment() {
+class AddItemFragment : BaseFragment(R.layout.fragment_saving_and_investing_add) {
 
     private val savingViewModel: SavingViewModel by viewModels()
 
@@ -40,7 +39,7 @@ class AddItemFragment : Fragment() {
     private fun saveToDb() {
         val title = et_saving_investing_title.text.toString()
         val amount = et_saving_investing_amount.text.toString().toDouble()
-        val validation = SharedMethods.verifyDataFormat(title, amount)
+        val validation = verifyDataFormat(title, amount)
         if(validation){
             val newItem = SavingItem(
                     0,

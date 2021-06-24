@@ -3,19 +3,18 @@ package com.gmail.appverstas.cashflow.data.income.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.gmail.appverstas.cashflow.R
-import com.gmail.appverstas.cashflow.data.SharedMethods
+import com.gmail.appverstas.cashflow.data.BaseFragment
 import com.gmail.appverstas.cashflow.data.income.IncomeViewModel
 import com.gmail.appverstas.cashflow.data.income.models.IncomeItem
 import kotlinx.android.synthetic.main.fragment_income_edit.*
 import kotlinx.android.synthetic.main.fragment_income_edit.view.*
 
 
-class EditIncomeFragment : Fragment() {
+class EditIncomeFragment : BaseFragment(R.layout.fragment_income_edit) {
 
     private val args by navArgs<EditIncomeFragmentArgs>()
     private val incomeViewModel: IncomeViewModel by viewModels()
@@ -54,7 +53,7 @@ class EditIncomeFragment : Fragment() {
     private fun updateItem() {
         val incomeTitle = et_edit_income_title.text.toString()
         val incomeAmount = et_edit_income_net_amount.text.toString().toDouble()
-        val validation = SharedMethods.verifyDataFormat(incomeTitle, incomeAmount)
+        val validation = verifyDataFormat(incomeTitle, incomeAmount)
         if(validation){
             val updatedIncome = IncomeItem(
                 args.currentItem.id,

@@ -3,18 +3,17 @@ package com.gmail.appverstas.cashflow.data.expenses.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.gmail.appverstas.cashflow.R
-import com.gmail.appverstas.cashflow.data.SharedMethods
+import com.gmail.appverstas.cashflow.data.BaseFragment
 import com.gmail.appverstas.cashflow.data.expenses.ExpenseViewModel
 import com.gmail.appverstas.cashflow.data.expenses.models.ExpenseItem
 import kotlinx.android.synthetic.main.fragment_expense_edit.*
 import kotlinx.android.synthetic.main.fragment_expense_edit.view.*
 
-class EditExpenseFragment : Fragment() {
+class EditExpenseFragment : BaseFragment(R.layout.fragment_expense_edit) {
 
     private val args by navArgs<EditExpenseFragmentArgs>()
     private val expenseViewModel: ExpenseViewModel by viewModels()
@@ -54,7 +53,7 @@ class EditExpenseFragment : Fragment() {
         val newTitle = et_edit_expense_title.text.toString()
         val newType = spinner_edit_expense_type.selectedItem.toString()
         val newAmount = et_edit_expense_amount.text.toString().toDouble()
-        val validation = SharedMethods.verifyDataFormat(newTitle, newAmount)
+        val validation = verifyDataFormat(newTitle, newAmount)
         if(validation){
             val updatedExpense = ExpenseItem(
                     args.currentExpenseItem.id,
